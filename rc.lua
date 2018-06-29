@@ -40,7 +40,7 @@ local my_table = awful.util.table or gears.table
 -- {{{ Modules
 local helpers    = require("helpers")
 local xdg_menu   = require("rootmenu")
-local tyrannical = require("tyrannical")
+-- local tyrannical = require("tyrannical")
 -- }}}
 
 
@@ -261,189 +261,189 @@ awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) 
 
 
 
--- {{{
-tyrannical.tags = {
-  {
-    name                  = "1:mail",
-    init                  = true,
-    selected              = false,
-    exclusive	          = true,
-    screen                = 1,
-    layout                = awful.layout.suit.max,
-    no_focus_stealing_in  = true,
-    class                 = {
-      "Claws-mail",   "Astroid",   "Thunderbird"
-    }
-  },
-  {
-    name                  = "2:web",
-    init                  = true,
-    selected              = false,
-    exclusive	          = true,
-    screen                = 1,
-    layout                = awful.layout.suit.max,
-    no_focus_stealing_in  = true,
-    class                 = {
-      "Firefox"   ,   "Chromium-browser"   ,   "Google-chrome"   ,   "qutebrowser"
-    }
-  },
-  {
-    name                  = "3:files",
-    init                  = true,
-    selected              = false,
-    exclusive             = true,
-    screen                = 1,
-    layout                = awful.layout.suit.tile,
-    exec_once             = {"pcmanfm"},
-    class                 = {
-      "Pcmanfm"   ,   "Spacefm"
-    }
-  },
-  {
-    name                  = "4:term",
-    init                  = true,
-    selected              = false,
-    exclusive             = true,
-    screen                = 1,
-    layout                = awful.layout.suit.fair,
-    no_focus_stealing_out = true,
-    class                 = {
-      "terminology"   ,   "x-terminal-emulator"   ,   "Hyper"   ,   "Lxterminal"
-    }
-  },
-  {
-    name                  = "5:divers",
-    init                  = true,
-    selected              = true,
-    exclusive             = false,
-    screen                = 1,
-    layout                = awful.layout.suit.fair,
-    no_focus_stealing_out = true,
-    fallback              = true,
-    class                 = {}
-  },
-  {
-    name                  = "6:jeux",
-    init                  = true,
-    selected              = false,
-    exclusive             = true,
-    screen                = screen.count()>1 and 2 or 1,
-    layout                = awful.layout.suit.max,
-    no_focus_stealing_in  = true,
-    no_focus_stealing_out = true,
-    class                 = {
-      "steam"   ,   "Steam"
-    }
-  },
-  {
-    name                  = "calibre",
-    init                  = false,
-    selected              = false,
-    exclusive             = true,
-    screen                = 1,
-    layout                = awful.layout.suit.max,
-    no_focus_stealing_in  = true,
-    no_focus_stealing_out = true,
-    class                 = {
-      "calibre"   ,   "calibre-gui"
-    }
-  },
-  {
-    name                  = "dev",
-    init                  = false,
-    selected              = false,
-    exclusive             = true,
-    screen                = 1,
-    layout                = awful.layout.suit.max,
-    no_focus_stealing_in  = true,
-    no_focus_stealing_out = true,
-    class                 = {
-      "atom"   ,   "Atom"   ,   "emacs"   ,   "Emacs"
-    }
-  },
-  {
-    name                  = "office",
-    init                  = false,
-    selected              = false,
-    exclusive             = true,
-    screen                = 1,
-    layout                = awful.layout.suit.fair,
-    no_focus_stealing_in  = true,
-    no_focus_stealing_out = true,
-    class                 = {
-      "libreoffice"               ,   "libreoffice-writer"   ,   "libreoffice-calc",
-      "libreoffice-startcenter"   ,   "Iscan"
-    }
-  },
-  {
-    name       	          = "keepassxc",
-    init                  = false,
-    selected              = false,
-    exclusive             = true,
-    hide                  = false,
-    screen                = 1,
-    layout                = awful.layout.suit.floating,
-    no_focus_stealing_in  = false,
-    no_focus_stealing_out = false,
-    locked                = true,
-    class                 = {
-      "keepassxc"
-    }
-  },
-  {
-    name                  = "video",
-    init                  = false,
-    selected              = false,
-    exclusive             = true,
-    screen                = 1,
-    layout                = awful.layout.suit.fair,
-    no_focus_stealing_in  = true,
-    no_focus_stealing_out = true,
-    class                 = {
-      "makemkv"   ,   "mkvtoolnix-gui"   ,   "Handbrake"
-    }
-  }
-}
-
--- Ignore the tag "exclusive" property for the following clients (matched by classes)
-tyrannical.properties.intrusive = {
-  "MPlayer"   ,   "pinentry"   ,   "feh"     ,   "alsamixer"   ,   "Calc"     ,
-  "xcalc"     ,   "gpick"      ,   "copyq"   ,   "gksudo"      ,   "keepassxc",
-  "Evince"
-}
-
--- Ignore the tiled layout for the matching clients
-tyrannical.properties.floating = {
-  "MPlayer"   ,   "pinentry"   ,   "feh"     ,   "alsamixer"   ,   "Calc"     ,
-  "xcalc"     ,   "gpick"      ,   "copyq"   ,   "gksudo"      ,   "keepassxc",
-  "Evince"    ,   "libreoffice-startcenter"  ,   "calibre"     ,   "calibre-gui"
-}
-
--- Make the matching clients (by classes) on top of the default layout
-tyrannical.properties.ontop = {
-  "MPlayer"   ,   "pinentry"   ,   "feh"     ,   "alsamixer"   ,   "Calc"     ,
-  "xcalc"     ,   "gpick"      ,   "copyq"   ,   "gksudo"      ,   "keepassxc",
-  "Evince"
-}
-
--- Force the matching clients (by classes) to be centered on the screen on init
-tyrannical.properties.placement = {
-  Calc           = awful.placement.centered,
-  Gucharmap      = awful.placement.centered,
-  Evince         = awful.placement.centered,
-  libreoffice    = awful.placement.centered,
-  calibre        = awful.placement.centered,
-  keepassxc      = awful.placement.centered,
-}
-
--- tyrannical.properties.titlebars_enabled = {
---   qutebrowser      = false,
+-- -- {{{
+-- tyrannical.tags = {
+--   {
+--     name                  = "1:mail",
+--     init                  = true,
+--     selected              = false,
+--     exclusive	            = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.max,
+--     no_focus_stealing_in  = true,
+--     class                 = {
+--       "Claws-mail",   "Astroid",   "Thunderbird"
+--     }
+--   },
+--   {
+--     name                  = "2:web",
+--     init                  = true,
+--     selected              = false,
+--     exclusive	            = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.max,
+--     no_focus_stealing_in  = true,
+--     class                 = {
+--       "Firefox"   ,   "Chromium-browser"   ,   "Google-chrome"   ,   "qutebrowser"
+--     }
+--   },
+--   {
+--     name                  = "3:files",
+--     init                  = true,
+--     selected              = false,
+--     exclusive             = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.tile,
+--     exec_once             = {"pcmanfm"},
+--     class                 = {
+--       "Pcmanfm"   ,   "Spacefm"
+--     }
+--   },
+--   {
+--     name                  = "4:term",
+--     init                  = true,
+--     selected              = false,
+--     exclusive             = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.fair,
+--     no_focus_stealing_out = true,
+--     class                 = {
+--       "terminology"   ,   "x-terminal-emulator"   ,   "Hyper"   ,   "Lxterminal"
+--     }
+--   },
+--   {
+--     name                  = "5:divers",
+--     init                  = true,
+--     selected              = true,
+--     exclusive             = false,
+--     screen                = 1,
+--     layout                = awful.layout.suit.fair,
+--     no_focus_stealing_out = true,
+--     fallback              = true,
+--     class                 = {}
+--   },
+--   {
+--     name                  = "6:jeux",
+--     init                  = true,
+--     selected              = false,
+--     exclusive             = true,
+--     screen                = screen.count()>1 and 2 or 1,
+--     layout                = awful.layout.suit.max,
+--     no_focus_stealing_in  = true,
+--     no_focus_stealing_out = true,
+--     class                 = {
+--       "steam"   ,   "Steam"
+--     }
+--   },
+--   {
+--     name                  = "calibre",
+--     init                  = false,
+--     selected              = false,
+--     exclusive             = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.max,
+--     no_focus_stealing_in  = true,
+--     no_focus_stealing_out = true,
+--     class                 = {
+--       "calibre"   ,   "calibre-gui"
+--     }
+--   },
+--   {
+--     name                  = "dev",
+--     init                  = false,
+--     selected              = false,
+--     exclusive             = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.max,
+--     no_focus_stealing_in  = true,
+--     no_focus_stealing_out = true,
+--     class                 = {
+--       "atom"   ,   "Atom"   ,   "emacs"   ,   "Emacs"
+--     }
+--   },
+--   {
+--     name                  = "office",
+--     init                  = false,
+--     selected              = false,
+--     exclusive             = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.fair,
+--     no_focus_stealing_in  = true,
+--     no_focus_stealing_out = true,
+--     class                 = {
+--       "libreoffice"               ,   "libreoffice-writer"   ,   "libreoffice-calc",
+--       "libreoffice-startcenter"   ,   "Iscan"
+--     }
+--   },
+--   {
+--     name       	          = "keepassxc",
+--     init                  = false,
+--     selected              = false,
+--     exclusive             = true,
+--     hide                  = false,
+--     screen                = 1,
+--     layout                = awful.layout.suit.floating,
+--     no_focus_stealing_in  = false,
+--     no_focus_stealing_out = false,
+--     locked                = true,
+--     class                 = {
+--       "keepassxc"
+--     }
+--   },
+--   {
+--     name                  = "video",
+--     init                  = false,
+--     selected              = false,
+--     exclusive             = true,
+--     screen                = 1,
+--     layout                = awful.layout.suit.fair,
+--     no_focus_stealing_in  = true,
+--     no_focus_stealing_out = true,
+--     class                 = {
+--       "makemkv"   ,   "mkvtoolnix-gui"   ,   "Handbrake"
+--     }
+--   }
 -- }
-
-tyrannical.settings.block_children_focus_stealing = true --Block popups ()
-tyrannical.settings.group_children                = true --Force popups/dialogs to have the same tags
-                                                         --as the parent client
--- }}}
+--
+-- -- Ignore the tag "exclusive" property for the following clients (matched by classes)
+-- tyrannical.properties.intrusive = {
+--   "MPlayer"   ,   "pinentry"   ,   "feh"     ,   "alsamixer"   ,   "Calc"     ,
+--   "xcalc"     ,   "gpick"      ,   "copyq"   ,   "gksudo"      ,   "keepassxc",
+--   "Evince"
+-- }
+--
+-- -- Ignore the tiled layout for the matching clients
+-- tyrannical.properties.floating = {
+--   "MPlayer"   ,   "pinentry"   ,   "feh"     ,   "alsamixer"   ,   "Calc"     ,
+--   "xcalc"     ,   "gpick"      ,   "copyq"   ,   "gksudo"      ,   "keepassxc",
+--   "Evince"    ,   "libreoffice-startcenter"  ,   "calibre"     ,   "calibre-gui"
+-- }
+--
+-- -- Make the matching clients (by classes) on top of the default layout
+-- tyrannical.properties.ontop = {
+--   "MPlayer"   ,   "pinentry"   ,   "feh"     ,   "alsamixer"   ,   "Calc"     ,
+--   "xcalc"     ,   "gpick"      ,   "copyq"   ,   "gksudo"      ,   "keepassxc",
+--   "Evince"
+-- }
+--
+-- -- Force the matching clients (by classes) to be centered on the screen on init
+-- tyrannical.properties.placement = {
+--   Calc           = awful.placement.centered,
+--   Gucharmap      = awful.placement.centered,
+--   Evince         = awful.placement.centered,
+--   libreoffice    = awful.placement.centered,
+--   calibre        = awful.placement.centered,
+--   keepassxc      = awful.placement.centered,
+-- }
+--
+-- -- tyrannical.properties.titlebars_enabled = {
+-- --   qutebrowser      = false,
+-- -- }
+--
+-- tyrannical.settings.block_children_focus_stealing = true --Block popups ()
+-- tyrannical.settings.group_children                = true --Force popups/dialogs to have the same tags
+--                                                          --as the parent client
+-- -- }}}
 
 
 
@@ -452,16 +452,17 @@ tyrannical.settings.group_children                = true --Force popups/dialogs 
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
-      properties = { border_width      = beautiful.border_width,
-		     border_color      = beautiful.border_normal,
-		     focus	       = awful.client.focus.filter,
-		     raise	       = true,
-		     keys	       = clientkeys,
-		     buttons	       = clientbuttons,
-		     screen	       = awful.screen.preferred,
-		     placement	       = awful.placement.no_overlap+awful.placement.no_offscreen+awful.placement.centered,
-                     -- titlebars_enabled = true,
-                     -- floating          = true
+      properties = {
+        border_width = beautiful.border_width,
+  	    border_color = beautiful.border_normal,
+		    focus	       = awful.client.focus.filter,
+		    raise	       = true,
+		    keys	       = clientkeys,
+		    buttons	     = clientbuttons,
+		    screen	     = awful.screen.preferred,
+		    placement	   = awful.placement.no_overlap+awful.placement.no_offscreen+awful.placement.centered,
+        -- titlebars_enabled = true,
+        -- floating          = true
      }
     },
     -- No titlebars for these classes
@@ -730,7 +731,7 @@ for i = 1, #awful.screen.focused().tags do
           t:view_only()
         end
       end,
-      {description = "Afficher le tag #"..i, group = "tag"}  
+      {description = "Afficher le tag #"..i, group = "tag"}
       ),
       -- Toggle tag display.
       awful.key({ modkey, "Control"       }, "#" .. i + 9,
