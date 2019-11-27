@@ -96,7 +96,7 @@ awful.layout.layouts = {
 }
 
 -- This is used later as the default terminal and editor to run.
-local terminal      = "terminology"
+local terminal      = "kitty"
 local editor        = os.getenv("EDITOR") or "editor"
 local editor_cmd    = terminal .. " -e " .. editor
 local launcher      = "rofi -switchers window,run,ssh -show run"
