@@ -38,8 +38,8 @@ local my_table = awful.util.table or gears.table
 -- }}}
 
 -- {{{ Modules
-local helpers    = require("helpers")
-local xdg_menu   = require("rootmenu")
+local helpers = require("helpers")
+local my_menu_debian = require("rootmenu")
 -- local tyrannical = require("tyrannical")
 -- }}}
 
@@ -73,6 +73,9 @@ end
 
 
 -- {{{ Variable definitions
+-- Path of applications icons
+local icon_path = "/usr/share/icons/Vibrancy-Colors/apps/24/"
+
 -- Names of the tags (maybe redefined in the theme file).
 -- awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -96,11 +99,12 @@ awful.layout.layouts = {
 }
 
 -- This is used later as the default terminal and editor to run.
-local terminal      = "terminology"
+local terminal      = "xterm"
 local editor        = os.getenv("EDITOR") or "editor"
+local filemanager   = terminal .. " -e ranger"
 local editor_cmd    = terminal .. " -e " .. editor
 local launcher      = "rofi -switchers window,run,ssh -show run"
-local filemanager   = "pcmanfm"
+-- local filemanager   = "pcmanfm"
 local screenshooter = "shutter -f"
 
 -- Wibar
@@ -162,14 +166,14 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/gune/theme.lua")
 
 -- {{{ Autostart applications
 -- helpers.run_once("urxvtd -q -f -o &")
-helpers.run_once("pcmanfm -d &")
+-- helpers.run_once("pcmanfm -d &")
 helpers.run_once("xbindkeys &")
 -- helpers.run_once("nitrogen --restore")
-helpers.run_once("compton -f -b &")
+-- helpers.run_once("compton -f -b &")
 helpers.run_once("unclutter -notclass libreoffice -notclass Handbrake &")
 helpers.run_once("nm-applet")
 helpers.run_once("blueman-applet")
-helpers.run_once("copyq")
+-- helpers.run_once("copyq")
 helpers.run_once("seafile-applet")
 helpers.run_once("dropbox start")
 helpers.run_once("keepassxc &")
@@ -181,7 +185,7 @@ helpers.run_once("shutter --min_at_startup")
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-local myawesomemenu = {
+local my_menu_awesome = {
   { "Aide", function() return false, hotkeys_popup.show_help end},
   { "Manuel", terminal .. " -e man awesome" },
   { "Éditer config", editor_cmd .. " " .. awesome.conffile },
@@ -189,51 +193,52 @@ local myawesomemenu = {
   { "Quitter", function() awesome.quit() end}
 }
 
-local browsermenu = {
-  {"Chromium","/usr/bin/chromium-browser","/usr/share/pixmaps/chromium-browser.png"},
-  {"Firefox","/usr/bin/firefox","/usr/share/pixmaps/firefox.png"},
-  {"QupZilla","/usr/bin/qupzilla","/usr/share/pixmaps/qupzilla.png"},
+local my_menu_browsers = {
+  {"Chromium", "/usr/bin/chromium-browser", "/usr/share/pixmaps/chromium.png"},
+  {"Firefox", "/usr/bin/firefox", icon_path .. "firefox-aurora.png"},
+  {"Qutebrowser", "/usr/bin/qutebrowser", "/usr/share/pixmaps/qutebrowser.xpm"},
 }
 
-local gamemenu = {
-  {"Divinity: Original Sin", "/home/jeff/Jeux/GOG Games/Divinity Original Sin Enhanced Edition/start.sh", "/home/jeff/Jeux/GOG Games/Divinity Original Sin Enhanced Edition/support/icon.png"},
-  {"Extreme Tux Racer","/usr/games/etr","/usr/share/pixmaps/etr.xpm"},
-  {"Keep Talking and Nobody Explodes", "/usr/share/playonlinux/playonlinux --run 'Keep Talking and Nobody Explodes' %F", "/home/jeff/.PlayOnLinux//icones/full_size/Keep Talking and Nobody Explodes"},
-  {"Little Inferno", "/home/jeff/Jeux/GOG Games/Little Inferno/start.sh", "/home/jeff/Jeux/GOG Games/Little Inferno/support/icon.png"},
-  {"Moon-Lander","/usr/games/moon-lander","/usr/share/pixmaps/moon-lander.xpm"},
-  {"Papers Please","/home/jeff/Jeux/GOG Games/Papers Please/start.sh","/home/jeff/Jeux/GOG Games/Papers Please/support/icon.png"},
-  {"Pillars of Eternity", "/home/jeff/Jeux/GOG Games/Pillars of Eternity/start.sh", "/home/jeff/Jeux/GOG Games/Pillars of Eternity/support/icon.png"},
-  {"The Witcher 2", "/home/jeff/Jeux/GOG Games/The Witcher 2 Assassins Of Kings Enhanced Edition/start.sh", "/home/jeff/Jeux/GOG Games/The Witcher 2 Assassins Of Kings Enhanced Edition/support/icon.png"},
+local my_menu_games = {
+  {"Lutris", "/usr/bin/lutris", icon_path .. "lutris.png"},
   {"Steam", "/usr/games/steam", "/usr/share/pixmaps/steam.png"},
+  -- {"Moon-Lander", "/usr/games/moon-lander", "/usr/share/pixmaps/moon-lander.xpm"},
+  -- {"Divinity: Original Sin", "/home/jeff/Jeux/GOG Games/Divinity Original Sin Enhanced Edition/start.sh", "/home/jeff/Jeux/GOG Games/Divinity Original Sin Enhanced Edition/support/icon.png"},
+  -- {"Extreme Tux Racer","/usr/games/etr","/usr/share/pixmaps/etr.xpm"},
+  -- {"Keep Talking and Nobody Explodes", "/usr/share/playonlinux/playonlinux --run 'Keep Talking and Nobody Explodes' %F", "/home/jeff/.PlayOnLinux//icones/full_size/Keep Talking and Nobody Explodes"},
+  -- {"Little Inferno", "/home/jeff/Jeux/GOG Games/Little Inferno/start.sh", "/home/jeff/Jeux/GOG Games/Little Inferno/support/icon.png"},
+  -- {"Papers Please","/home/jeff/Jeux/GOG Games/Papers Please/start.sh","/home/jeff/Jeux/GOG Games/Papers Please/support/icon.png"},
+  -- {"Pillars of Eternity", "/home/jeff/Jeux/GOG Games/Pillars of Eternity/start.sh", "/home/jeff/Jeux/GOG Games/Pillars of Eternity/support/icon.png"},
+  -- {"The Witcher 2", "/home/jeff/Jeux/GOG Games/The Witcher 2 Assassins Of Kings Enhanced Edition/start.sh", "/home/jeff/Jeux/GOG Games/The Witcher 2 Assassins Of Kings Enhanced Edition/support/icon.png"},
 }
 
-local editormenu = {
-  {"Atom", "/usr/bin/atom", "/usr/share/icons/Numix-Circle/48/apps/atom.svg"},
-  {"Emacs", "emacs", "/usr/share/icons/Numix-Circle/48/apps/emacs.svg"},
-  {"Vim", "/usr/bin/vim", "/usr/share/icons/Numix-Circle/48/apps/vim.svg"},
+local my_menu_editors = {
+  {"Atom", "/usr/bin/atom", icon_path .. "atom.png"},
+  {"Emacs", "emacs", icon_path .. "emacs.png"},
+  {"Vim", "/usr/bin/vim", icon_path .. "vim.png"},
 }
 
-local myappmenu = {
-  {"Éditeurs de texte", editormenu},
-  {"Jeux", gamemenu},
-  {"Navigateurs", browsermenu},
+local my_menu_favorites_apps = {
+  {"Éditeurs de texte", my_menu_editors},
+  {"Jeux", my_menu_games},
+  {"Navigateurs", my_menu_browsers},
 }
 
-local myfavmenu = {
-  {"Firefox","/usr/bin/firefox","/usr/share/pixmaps/firefox.png"},
-  {"Terminal", terminal}
-}
-
-local mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesome_icon },
-                                          { "Applications", myappmenu },
-                                          { "Debian", xdgmenu },
-                                          { "--------------" },
-                                          {"Chromium","/usr/bin/chromium-browser","/usr/share/pixmaps/chromium-browser.png"},
-                                          {"Terminal", terminal} },
+local my_menu_main = awful.menu({ items = {
+                                          {"Awesome", my_menu_awesome, beautiful.awesome_icon},
+                                          {"Applications", xdgmenu, "/usr/share/icons/gnome/24x24/places/debian-swirl.png"},
+                                          {"--------------"},
+                                          {"Jeux", my_menu_games, "/usr/share/icons/Vibrancy-Colors/categories/24/applications-games.png"},
+                                          {"Emacs", "emacs", icon_path .. "emacs.png"},
+                                          {"Mail", "/usr/bin/claws-mail", icon_path .. "claws-mail.png"},
+                                          {"Internet", "/usr/bin/qutebrowser", "/usr/share/pixmaps/qutebrowser.xpm"},
+                                          {"--------------"},
+                                          {"Fichiers", filemanager, "/usr/share/icons/Vibrancy-Dark-Red/apps/24/file-manager.png"},
+                                          {"Terminal", terminal, icon_path .. "terminal.png"} },
                                  theme = { height = 20, width = 200 }
 })
 
-local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
+local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = my_menu_main })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -485,7 +490,7 @@ awful.rules.rules = {
 -- {{{ Key bindings
 globalkeys = my_table.join(
   -- Awesome
-  awful.key({ modkey,                   }, "w", function () mymainmenu:show() end,
+  awful.key({ modkey,                   }, "w", function () my_menu_main:show() end,
     {description = "Afficher menu principal", group = "awesome"}
   ),
   awful.key({ modkey,                   }, "h", hotkeys_popup.show_help,
@@ -780,7 +785,7 @@ clientbuttons = my_table.join(
 
 root.buttons(
   my_table.join(
-    awful.button({                           }, 3, function () mymainmenu:toggle() end)
+    awful.button({                           }, 3, function () my_menu_main:toggle() end)
 --    awful.button({ modkey }, 4, awful.tag.viewnext),
 --    awful.button({ modkey }, 5, awful.tag.viewprev)
   )
